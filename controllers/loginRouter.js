@@ -1,24 +1,48 @@
-const loginRouter = require('express').Router();
-const config = require('../utils/config');
-
-const baseURL = 'http://localhost:3005/';
-
 // Login and authorization for spotify API
 
-loginRouter.get('/login', (req, res) => {
-  const scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private user-follow-read user-follow-modify user-library-read';
+const loginRouter = require('express').Router();
+const SpotifyWebApi = require('spotify-web-api-node');
+const config = require('../utils/config');
 
-  res.redirect(`${'https://accounts.spotify.com/authorize'
-   + '?response_type=code'
-   + '&client_id='}
-   ${config.CLIENT_ID}
-   ${scopes ? `&scope=${encodeURIComponent(scopes)}` : ''
-}&redirect_uri=${encodeURIComponent(`${baseURL}callback`)}`);
+const redirectUrl = 'http://localhost:3005/callback';
+const scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private user-follow-read user-follow-modify user-library-read';
+
+const spotifyApi = new SpotifyWebApi({
+  redirectUri: redirectUrl,
+  clientId: config.CLIENT_ID,
+  clientSecret: config.CLIENT_SECRET,
 });
 
-loginRouter.get('/callback', (req, res) => {
-  console.log(req.query.code);
-  res.status(200).send('<h1>spotify callback</h1>');
+loginRouter.get('/login', (req, res) => {
+  res.redirect(`${'https://accounts.spotify.com/authorize'
+  + '?response_type=code'
+  + '&client_id='}${config.CLIENT_ID
+  }${scopes ? `&scope=${encodeURIComponent(scopes)}` : ''
+  }&redirect_uri=${encodeURIComponent(`${redirectUrl}`)}`);
+});
+
+loginRouter.get('/callback', async (req, res) => {
+  // Callback from spotify API after login
+  const authCode = req.query.code || null;
+
+  if (authCode === null) {
+    console.log('null auth-code');
+    res.status(401).json({
+      error: 'Unauthorized',
+    });
+  } else {
+    try {
+      const response = await spotifyApi.authorizationCodeGrant(authCode);
+      console.log(`The token expires in ${response.body.expires_in}`);
+      console.log(`The access token is ${response.body.access_token}`);
+      console.log(`The refresh token is ${response.body.refresh_token}`);
+
+      spotifyApi.setAccessToken(response.body.access_token);
+      spotifyApi.setRefreshToken(response.body.refresh_token);
+    } catch (e) {
+      console.log('Something went wrong!', e);
+    }
+  }
 });
 
 module.exports = loginRouter;
