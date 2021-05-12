@@ -39,6 +39,9 @@ loginRouter.get('/callback', async (req, res) => {
 
       spotifyApi.setAccessToken(response.body.access_token);
       spotifyApi.setRefreshToken(response.body.refresh_token);
+
+      const data = await spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE');
+      console.log('Artist albums', data.body);
     } catch (e) {
       console.log('Something went wrong!', e);
     }
