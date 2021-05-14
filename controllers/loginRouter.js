@@ -1,10 +1,11 @@
 // Login and authorization for spotify API
 
 const loginRouter = require('express').Router();
+const { default: axios } = require('axios');
 const SpotifyWebApi = require('spotify-web-api-node');
 const config = require('../utils/config');
 
-const redirectUrl = 'http://localhost:3005/callback';
+const redirectUrl = `${config.baseUrl}/login/callback`;
 const scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private user-follow-read user-follow-modify user-library-read';
 
 const spotifyApi = new SpotifyWebApi({
@@ -13,7 +14,7 @@ const spotifyApi = new SpotifyWebApi({
   clientSecret: config.CLIENT_SECRET,
 });
 
-loginRouter.get('/login', (req, res) => {
+loginRouter.get('/', (req, res) => {
   res.redirect(`${'https://accounts.spotify.com/authorize'
   + '?response_type=code'
   + '&client_id='}${config.CLIENT_ID
@@ -33,15 +34,18 @@ loginRouter.get('/callback', async (req, res) => {
   } else {
     try {
       const response = await spotifyApi.authorizationCodeGrant(authCode);
-      console.log(`The token expires in ${response.body.expires_in}`);
-      console.log(`The access token is ${response.body.access_token}`);
-      console.log(`The refresh token is ${response.body.refresh_token}`);
-
       spotifyApi.setAccessToken(response.body.access_token);
       spotifyApi.setRefreshToken(response.body.refresh_token);
 
-      const data = await spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE');
-      console.log('Artist albums', data.body);
+      const authUser = await spotifyApi.getMe();
+      const userToSave = {
+        username: authUser.display_name,
+        spotifyName: authUser.display_name,
+        email: authUser.email,
+      };
+      const userPost = await axios.post(`${config.baseUrl}/users`, userToSave);
+      console.log('#################', userPost);
+      res.status(200).send(`<h2>User Data: ${JSON.stringify(authUser.body.display_name)}</h2>`);
     } catch (e) {
       console.log('Something went wrong!', e);
     }
