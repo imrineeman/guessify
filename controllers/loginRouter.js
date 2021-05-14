@@ -27,7 +27,6 @@ loginRouter.get('/callback', async (req, res) => {
   const authCode = req.query.code || null;
 
   if (authCode === null) {
-    console.log('null auth-code');
     res.status(401).json({
       error: 'Unauthorized',
     });
@@ -47,7 +46,6 @@ loginRouter.get('/callback', async (req, res) => {
         `${config.baseUrl}/api/users`,
         userToSave,
       );
-      console.log('#################', userPost);
       res.status(200).send(`<h2>User Data: ${JSON.stringify(authUser.body.display_name)}</h2>`);
     } catch (e) {
       console.log('Something went wrong!', e);
