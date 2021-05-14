@@ -13,7 +13,6 @@ usersRouter.get('/:id', async (req, res) => {
 
 usersRouter.post('', async (req, res) => {
   const { body } = req;
-  console.log(req.body);
 
   const user = new User({
     username: body.username,

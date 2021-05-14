@@ -9,6 +9,7 @@ const usersRouter = require('./controllers/usersRouter');
 const config = require('./utils/config');
 
 const app = express();
+app.use(express.json());
 
 mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,

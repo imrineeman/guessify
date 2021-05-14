@@ -39,15 +39,19 @@ loginRouter.get('/callback', async (req, res) => {
 
       const authUser = await spotifyApi.getMe();
       const userToSave = {
-        username: authUser.display_name,
-        spotifyName: authUser.display_name,
-        email: authUser.email,
+        username: authUser.body.display_name,
+        spotifyName: authUser.body.display_name,
+        email: authUser.body.email,
       };
-      const userPost = await axios.post(`${config.baseUrl}/users`, userToSave);
+      const userPost = await axios.post(
+        `${config.baseUrl}/api/users`,
+        userToSave,
+      );
       console.log('#################', userPost);
       res.status(200).send(`<h2>User Data: ${JSON.stringify(authUser.body.display_name)}</h2>`);
     } catch (e) {
       console.log('Something went wrong!', e);
+      res.status(400).send('<h1>Error!!!!!!!!!</h1>');
     }
   }
 });
