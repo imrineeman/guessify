@@ -18,6 +18,7 @@ usersRouter.post('', async (req, res) => {
     username: body.username,
     spotifyName: body.username,
     email: body.email,
+    spotifyId: body.spotifyId,
   });
 
   try {
@@ -26,6 +27,12 @@ usersRouter.post('', async (req, res) => {
   } catch (err) {
     console.log('err', err);
   }
+});
+
+usersRouter.put('/:id', async (req, res) => {
+  const newUser = req.body;
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, newUser);
+  res.json(updatedUser);
 });
 
 module.exports = usersRouter;
