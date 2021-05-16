@@ -18,14 +18,32 @@ usersRouter.post('', async (req, res) => {
     username: body.username,
     spotifyName: body.username,
     email: body.email,
-    spotifyId: body.spotifyId,
+    _id: body._id,
   });
 
   try {
-    const savedUser = await user.save();
-    res.status(201).json(savedUser);
+    const isUser = await User.findOne({ _id: user._id });
+    if (isUser === null) {
+      const savedUser = await user.save();
+      res.status(201).json(savedUser);
+    } else {
+      const userData = {
+        username: user.username,
+        spotifyName: user.username,
+        email: user.email,
+      };
+      const updatedUser = await User.findOneAndUpdate({ _id: user._id }, userData, { new: true });
+      console.log('User updated', updatedUser);
+      res.status(204).json(updatedUser);
+    }
   } catch (err) {
-    console.log('err', err);
+    if (err.name === 'MongoError') {
+      console.log('Mongoerror');
+      res.status(400).json({ error: 'MongoError' });
+    } else {
+      console.log('Error', err);
+      res.status(400).json({ error: 'Error' });
+    }
   }
 });
 
