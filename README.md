@@ -1,2 +1,2 @@
-# guessify
+# Guessify
 Spotify guessing game
