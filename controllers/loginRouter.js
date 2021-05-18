@@ -55,11 +55,12 @@ loginRouter.get('/callback', async (req, res) => {
       };
 
       for (let p = 0; p < playlistArr.length; p += 1) {
-        const tracks = await spotifyApi.getPlaylistTracks(playlistArr[p], {
-          offset: 1,
-          limit: 5,
-          fields: 'items',
-        });
+        const tracks = await spotifyApi
+          .getPlaylistTracks(playlistArr[p], {
+            offset: 1,
+            limit: 5,
+            fields: 'items(track(name,id,album(artists,id,name,release_date,images)))',
+          });
 
         const playlistObj = {
           playlistId: playlistArr[p],
@@ -71,6 +72,7 @@ loginRouter.get('/callback', async (req, res) => {
       const savePlaylists = playlistObjArr.map((p) => new Playlist(p));
       const promises = savePlaylists.map((p) => p.save());
       await Promise.all(promises);
+      console.log(playlistObjArr);
 
       // Should this be direct DB save or axios call?
       await axios.post(
