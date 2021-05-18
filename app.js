@@ -2,6 +2,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const cors = require('cors');
 // Controller imports
 const loginRouter = require('./controllers/loginRouter');
 const usersRouter = require('./controllers/usersRouter');
@@ -21,6 +22,7 @@ mongoose.connect(config.MONGODB_URI, {
 app.use('/login', loginRouter);
 app.use('/api/users', usersRouter);
 app.use(morgan('tiny'));
+// app.use(cors); Not working for some reason
 
 app.get('/', (req, res) => {
   res.status(200).send('<h1>Main Site</h1>');

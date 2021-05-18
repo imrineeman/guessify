@@ -1,5 +1,4 @@
 // Login and authorization for spotify API
-
 const loginRouter = require('express').Router();
 const { default: axios } = require('axios');
 const SpotifyWebApi = require('spotify-web-api-node');
@@ -37,20 +36,30 @@ loginRouter.get('/callback', async (req, res) => {
       spotifyApi.setRefreshToken(response.body.refresh_token);
 
       const authUser = await spotifyApi.getMe();
+      const userPlaylists = await spotifyApi.getUserPlaylists();
+      const playlists = userPlaylists.body.items;
+      const playlistArr = [];
+
+      for (let i = 0; i < playlists.length; i++) {
+        playlistArr.push(userPlaylists.body.items[i].id);
+      }
 
       const userToSave = {
         username: authUser.body.display_name,
         spotifyName: authUser.body.display_name,
         email: authUser.body.email,
         _id: authUser.body.id,
+        playlists: playlistArr,
       };
 
       const userPost = await axios.post(
         `${config.baseUrl}/api/users`,
         userToSave,
       );
+
       res.status(200).send(`<h2>User Data: ${JSON.stringify(authUser.body.display_name)}</h2>`);
     } catch (e) {
+      console.log(e);
       res.status(400).send('<h1>Error!!!!!!!!!</h1>');
     }
   }

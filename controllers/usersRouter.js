@@ -11,6 +11,10 @@ usersRouter.get('/:id', async (req, res) => {
   res.status(200).json(user);
 });
 
+usersRouter.get('/playlists', async (req, res) => { // Get all playlists
+
+});
+
 usersRouter.post('', async (req, res) => {
   const { body } = req;
 
@@ -19,7 +23,9 @@ usersRouter.post('', async (req, res) => {
     spotifyName: body.username,
     email: body.email,
     _id: body._id,
+    playlists: body.playlists,
   });
+  console.log(user);
 
   try {
     const isUser = await User.findOne({ _id: user._id });

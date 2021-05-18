@@ -3,3 +3,7 @@ const User = require('../models/user');
 const app = require('../app');
 
 const api = supertest(app);
+
+describe('User api tests', () => {
+
+});
