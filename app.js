@@ -6,6 +6,7 @@ const cors = require('cors');
 // Controller imports
 const loginRouter = require('./controllers/loginRouter');
 const usersRouter = require('./controllers/usersRouter');
+const playlistsRouter = require('./controllers/playlistsRouter');
 // Utilities imports
 const config = require('./utils/config');
 
@@ -18,9 +19,10 @@ mongoose.connect(config.MONGODB_URI, {
   useFindAndModify: false,
   useCreateIndex: true,
 });
-
+// Middleware
 app.use('/login', loginRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/playlists', playlistsRouter);
 app.use(morgan('tiny'));
 // app.use(cors); Not working for some reason
 

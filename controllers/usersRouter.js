@@ -11,10 +11,6 @@ usersRouter.get('/:id', async (req, res) => {
   res.status(200).json(user);
 });
 
-usersRouter.get('/playlists', async (req, res) => { // Get all playlists
-
-});
-
 usersRouter.post('', async (req, res) => {
   const { body } = req;
 
@@ -25,7 +21,6 @@ usersRouter.post('', async (req, res) => {
     _id: body._id,
     playlists: body.playlists,
   });
-  console.log(user);
 
   try {
     const isUser = await User.findOne({ _id: user._id });
@@ -39,7 +34,6 @@ usersRouter.post('', async (req, res) => {
         email: user.email,
       };
       const updatedUser = await User.findOneAndUpdate({ _id: user._id }, userData, { new: true });
-      console.log('User updated', updatedUser);
       res.status(204).json(updatedUser);
     }
   } catch (err) {
