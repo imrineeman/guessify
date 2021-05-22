@@ -1,13 +1,14 @@
 const playlistsRouter = require('express').Router();
-const Playlist = require('../models/playlist');
+// Services
+const playlistService = require('../services/playlistService');
 
 playlistsRouter.get('/', async (req, res) => {
-  const playlists = await Playlist.find({});
+  const playlists = await playlistService.getPlaylists();
   res.status(200).json(playlists);
 });
 
 playlistsRouter.get('/:id', async (req, res) => {
-  const playlist = await Playlist.findById(req.params.id);
+  const playlist = await playlistService.getPlaylistById(req);
   res.status(200).json(playlist);
 });
 
