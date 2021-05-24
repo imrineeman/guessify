@@ -10,4 +10,14 @@ const getPlaylistById = async (req) => {
   return playlist;
 };
 
-module.exports = { getPlaylists, getPlaylistById };
+const savePlaylist = async (data) => {
+  const playlistData = { ...data };
+  const playlist = new Playlist(playlistData);
+  await playlist.save();
+};
+
+module.exports = {
+  getPlaylists,
+  getPlaylistById,
+  savePlaylist,
+};

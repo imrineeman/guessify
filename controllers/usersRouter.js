@@ -31,7 +31,6 @@ usersRouter.post('', async (req, res) => {
     } else {
       res.status(204).json(result.user);
     }
-    console.log(result);
   } catch (err) {
     if (err.name === 'MongoError') {
       console.log('Mongoerror');

@@ -2,8 +2,9 @@
 const loginRouter = require('express').Router();
 const { default: axios } = require('axios');
 const SpotifyWebApi = require('spotify-web-api-node');
-const Playlist = require('../models/playlist');
 const config = require('../utils/config');
+// Services
+const playlistService = require('../services/playlistService');
 
 const redirectUrl = `${config.baseUrl}/login/callback`;
 const scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private user-follow-read user-follow-modify user-library-read';
@@ -69,8 +70,8 @@ loginRouter.get('/callback', async (req, res) => {
         };
         playlistObjArr.push(playlistObj);
       }
-      const savePlaylists = playlistObjArr.map((p) => new Playlist(p));
-      const promises = savePlaylists.map((p) => p.save());
+      // const savePlaylists = playlistObjArr.map((p) => new Playlist(p));
+      const promises = playlistObjArr.map((p) => playlistService.savePlaylist(p));
       await Promise.all(promises);
 
       // Should this be direct DB save or axios call?
