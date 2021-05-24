@@ -1,14 +1,16 @@
 const usersRouter = require('express').Router();
 const User = require('../models/user');
+// Services
+const userService = require('../services/userService');
 
 usersRouter.get('/', async (req, res) => {
-  const users = await User.find({});
+  const users = await userService.getUsers();
   res.status(200).json(users);
 });
 
 usersRouter.get('/:id', async (req, res) => {
-  const user = await User.findById(req.params.id);
-  res.status(200).json(user);
+  const user = await userService.getUserById(req);
+  res.status(300).json(user);
 });
 
 usersRouter.post('', async (req, res) => {
@@ -18,14 +20,32 @@ usersRouter.post('', async (req, res) => {
     username: body.username,
     spotifyName: body.username,
     email: body.email,
+    _id: body._id,
+    playlists: body.playlists,
   });
 
   try {
-    const savedUser = await user.save();
-    res.status(201).json(savedUser);
+    const result = await userService.saveUser(user);
+    if (result.saved === true) {
+      res.status(201).json(result.user);
+    } else {
+      res.status(204).json(result.user);
+    }
   } catch (err) {
-    console.log('err', err);
+    if (err.name === 'MongoError') {
+      console.log('Mongoerror');
+      res.status(400).json({ error: 'MongoError' });
+    } else {
+      console.log('Error', err);
+      res.status(400).json({ error: 'Error' });
+    }
   }
+});
+
+usersRouter.put('/:id', async (req, res) => {
+  const newUser = req.body;
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, newUser);
+  res.json(updatedUser);
 });
 
 module.exports = usersRouter;

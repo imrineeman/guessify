@@ -4,6 +4,8 @@ const userSchema = new mongoose.Schema({
   username: String,
   spotifyName: String,
   email: String,
+  _id: String,
+  playlists: [],
 });
 
 const User = mongoose.model('User', userSchema);

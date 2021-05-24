@@ -1,9 +1,10 @@
 // Login and authorization for spotify API
-
 const loginRouter = require('express').Router();
 const { default: axios } = require('axios');
 const SpotifyWebApi = require('spotify-web-api-node');
 const config = require('../utils/config');
+// Services
+const playlistService = require('../services/playlistService');
 
 const redirectUrl = `${config.baseUrl}/login/callback`;
 const scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private user-follow-read user-follow-modify user-library-read';
@@ -37,18 +38,51 @@ loginRouter.get('/callback', async (req, res) => {
       spotifyApi.setRefreshToken(response.body.refresh_token);
 
       const authUser = await spotifyApi.getMe();
+      const userPlaylists = await spotifyApi.getUserPlaylists();
+      const playlists = userPlaylists.body.items;
+      const playlistArr = [];
+      const playlistObjArr = [];
+
+      for (let i = 0; i < playlists.length; i += 1) {
+        playlistArr.push(userPlaylists.body.items[i].id);
+      }
+
       const userToSave = {
         username: authUser.body.display_name,
         spotifyName: authUser.body.display_name,
         email: authUser.body.email,
+        _id: authUser.body.id,
+        playlists: playlistArr,
       };
-      const userPost = await axios.post(
+
+      for (let p = 0; p < playlistArr.length; p += 1) {
+        const tracks = await spotifyApi
+          .getPlaylistTracks(playlistArr[p], {
+            offset: 1,
+            limit: 100,
+            fields: 'items(track(name,id,album(artists,id,name,release_date,images)))',
+          });
+
+        const playlistObj = {
+          playlistId: playlistArr[p],
+          userId: authUser.body.id,
+          tracks: tracks.body.items,
+        };
+        playlistObjArr.push(playlistObj);
+      }
+      // const savePlaylists = playlistObjArr.map((p) => new Playlist(p));
+      const promises = playlistObjArr.map((p) => playlistService.savePlaylist(p));
+      await Promise.all(promises);
+
+      // Should this be direct DB save or axios call?
+      await axios.post(
         `${config.baseUrl}/api/users`,
         userToSave,
       );
+
       res.status(200).send(`<h2>User Data: ${JSON.stringify(authUser.body.display_name)}</h2>`);
     } catch (e) {
-      console.log('Something went wrong!', e);
+      console.log(e);
       res.status(400).send('<h1>Error!!!!!!!!!</h1>');
     }
   }
