@@ -6,7 +6,7 @@ const getPlaylists = async () => {
 };
 
 const getPlaylistById = async (req) => {
-  const playlist = await Playlist.findById(req.params.id);
+  const playlist = await Playlist.find({ playlistId: req.params.id });
   return playlist;
 };
 
