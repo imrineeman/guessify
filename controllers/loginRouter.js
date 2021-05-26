@@ -65,7 +65,7 @@ loginRouter.get('/callback', async (req, res) => {
 
         const playlistObj = {
           playlistId: playlistArr[p],
-          userId: authUser.body.id,
+          userId: [authUser.body.id],
           tracks: tracks.body.items,
         };
         playlistObjArr.push(playlistObj);

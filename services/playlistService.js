@@ -14,7 +14,6 @@ const savePlaylist = async (data) => {
   const playlistData = { ...data };
   const playlist = new Playlist(playlistData);
   const isNull = await Playlist.find({ playlistId: playlistData.playlistId });
-  console.log(isNull);
   if (!isNull.length) {
     await playlist.save();
   } else {
