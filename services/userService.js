@@ -11,13 +11,19 @@ const getUserById = async (id) => {
 };
 
 const saveUser = async (user) => {
-  const isUser = await User
-    .findOne({ spotifyId: user.spotifyId });
-  if (isUser === null) {
-    const savedUser = new User(user);
-    const res = await savedUser.save();
-    return { saved: true, user: res };
-  }
+  const userData = {
+    username: user.username,
+    spotifyName: user.username,
+    spotifyId: user.spotifyId,
+    email: user.email,
+    playlists: user.playlists,
+  };
+  const savedUser = new User(userData);
+  const res = await savedUser.save();
+  return res;
+};
+
+const updateUser = async (user) => {
   const userData = {
     username: user.username,
     spotifyName: user.username,
@@ -35,4 +41,5 @@ module.exports = {
   getUsers,
   saveUser,
   getUserById,
+  updateUser,
 };
