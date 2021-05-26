@@ -51,7 +51,7 @@ loginRouter.get('/callback', async (req, res) => {
         username: authUser.body.display_name,
         spotifyName: authUser.body.display_name,
         email: authUser.body.email,
-        _id: authUser.body.id,
+        spotifyId: authUser.body.id,
         playlists: playlistArr,
       };
 
@@ -75,12 +75,12 @@ loginRouter.get('/callback', async (req, res) => {
       await Promise.all(promises);
 
       // Should this be direct DB save or axios call?
-      await axios.post(
+      const usr = await axios.post(
         `${config.baseUrl}/api/users`,
         userToSave,
       );
 
-      res.status(200).send(`<h2>User Data: ${JSON.stringify(authUser.body.display_name)}</h2>`);
+      res.status(200).json(usr.data);
     } catch (e) {
       console.log(e);
       res.status(400).send('<h1>Error!!!!!!!!!</h1>');

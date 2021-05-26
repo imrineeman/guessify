@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const playlistSchema = new mongoose.Schema({
   playlistId: {
     type: String,
-    unique: true,
   },
   userId: {
     type: String,

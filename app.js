@@ -26,7 +26,7 @@ app.use('/login', loginRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/playlists', playlistsRouter);
 app.use(morgan('tiny'));
-// app.use(cors); Not working for some reason
+// app.use(cors);
 
 app.get('/', (req, res) => {
   res.status(200).send('<h1>Main Site</h1>');

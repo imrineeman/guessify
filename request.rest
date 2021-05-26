@@ -1,0 +1,9 @@
+POST http://localhost:3005/api/users
+content-type: application/json
+
+{
+  "spotifyId": "123",
+  "username": "lolo",
+  "spotifyName": "asdfasd",
+  "email": "ddd@gmail.com",
+}

@@ -13,7 +13,12 @@ const getPlaylistById = async (req) => {
 const savePlaylist = async (data) => {
   const playlistData = { ...data };
   const playlist = new Playlist(playlistData);
-  await playlist.save();
+  const isNull = await Playlist.find({ playlistId: playlistData.playlistId });
+  if (isNull === null || undefined) {
+    await playlist.save();
+  } else {
+    console.log('duplcate playlist'); // Add user id \ ignore?
+  }
 };
 
 module.exports = {

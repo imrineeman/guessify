@@ -9,8 +9,8 @@ usersRouter.get('/', async (req, res) => {
 });
 
 usersRouter.get('/:id', async (req, res) => {
-  const user = await userService.getUserById(req);
-  res.status(300).json(user);
+  const user = await userService.getUserById(req.params.id);
+  res.status(200).json(user);
 });
 
 usersRouter.post('', async (req, res) => {
@@ -20,7 +20,7 @@ usersRouter.post('', async (req, res) => {
     username: body.username,
     spotifyName: body.username,
     email: body.email,
-    _id: body._id,
+    spotifyId: body.spotifyId,
     playlists: body.playlists,
   });
 
