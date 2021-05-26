@@ -13,11 +13,11 @@ const getPlaylistById = async (req) => {
 const savePlaylist = async (data) => {
   const playlistData = { ...data };
   const playlist = new Playlist(playlistData);
-  const isNull = await Playlist.find({ playlistId: playlistData.playlistId });
-  if (!isNull.length) {
+  const doesExists = await Playlist.find({ playlistId: playlistData.playlistId });
+  if (!doesExists.length) {
     await playlist.save();
   } else {
-    // Many to many relationship implementation
+    // Many to many relationship implementation, currently skipping duplicates
   }
 };
 

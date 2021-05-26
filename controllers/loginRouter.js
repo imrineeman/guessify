@@ -72,12 +72,12 @@ loginRouter.get('/callback', async (req, res) => {
       const playlistPromises = playlistObjArr.map((p) => playlistService.savePlaylist(p));
       await Promise.all(playlistPromises);
 
-      const doesExists = await userService.getUserById(userToSave.spotifyId);
-      if (doesExists === null || doesExists.length === 0) {
+      const userDoesExists = await userService.getUserById(userToSave.spotifyId);
+      if (userDoesExists === null || userDoesExists.length === 0) {
         const usr = await userService.saveUser(userToSave);
         res.status(200).json(usr.data);
       } else {
-        const usr = await userService.updateUser(userToSave);
+        await userService.updateUser(userToSave);
         res.redirect('/');
       }
     } catch (e) {
