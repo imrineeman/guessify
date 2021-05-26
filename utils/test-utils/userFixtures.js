@@ -152,8 +152,8 @@ const fakePlaylist = {
       },
     },
   ],
-  playlistId: '7saDGCu8e21c1Ag4TBRMWE',
-  userId: '5jnj21rsj8wrnnljdmkdh3jzf',
+  playlistId: '23232323',
+  userId: ['12345'],
 };
 
 module.exports = {

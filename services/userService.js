@@ -14,8 +14,9 @@ const saveUser = async (user) => {
   const isUser = await User
     .findOne({ spotifyId: user.spotifyId });
   if (isUser === null) {
-    const savedUser = await user.save();
-    return { saved: true, user: savedUser };
+    const savedUser = new User(user);
+    const res = await savedUser.save();
+    return { saved: true, user: res };
   }
   const userData = {
     username: user.username,

@@ -6,7 +6,7 @@ const getPlaylists = async () => {
 };
 
 const getPlaylistById = async (req) => {
-  const playlist = await Playlist.find({ playlistId: req.params.id });
+  const playlist = await Playlist.findOne({ playlistId: req.params.id });
   return playlist;
 };
 
@@ -17,7 +17,7 @@ const savePlaylist = async (data) => {
   if (!isNull.length) {
     await playlist.save();
   } else {
-    console.log('duplcate playlist'); // Add user id \ ignore?
+    // Many to many relationship implementation
   }
 };
 
