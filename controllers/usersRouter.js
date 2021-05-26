@@ -1,3 +1,4 @@
+// Routers
 const usersRouter = require('express').Router();
 // Services
 const userService = require('../services/userService');
@@ -24,7 +25,7 @@ usersRouter.post('', async (req, res) => {
 usersRouter.put('/:id', async (req, res) => {
   try {
     const updatedUser = await userService.updateUser(req.body);
-    res.json(updatedUser);
+    res.status(200).json(updatedUser);
   } catch (err) {
     res.status(400).json({ error: err.name });
   }

@@ -34,7 +34,7 @@ const updateUser = async (user) => {
   const updatedUser = await User
     .findOneAndUpdate({ spotifyId: user.spotifyId },
       userData, { new: true });
-  return { saved: false, user: updatedUser };
+  return updatedUser;
 };
 
 module.exports = {
