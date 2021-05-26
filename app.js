@@ -13,18 +13,20 @@ const config = require('./utils/config');
 const app = express();
 app.use(express.json());
 
-mongoose.connect(config.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
-});
+if (process.env.NODE_ENV !== 'test') {
+  mongoose.connect(config.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  });
+}
 // Middleware
 app.use('/login', loginRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/playlists', playlistsRouter);
 app.use(morgan('tiny'));
-// app.use(cors); Not working for some reason
+// app.use(cors);
 
 app.get('/', (req, res) => {
   res.status(200).send('<h1>Main Site</h1>');

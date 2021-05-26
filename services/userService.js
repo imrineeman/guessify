@@ -5,14 +5,14 @@ const getUsers = async () => {
   return users;
 };
 
-const getUserById = async (req) => {
-  const user = await User.findById(req.params.id);
+const getUserById = async (id) => {
+  const user = await User.findOne({ spotifyId: id });
   return user;
 };
 
 const saveUser = async (user) => {
   const isUser = await User
-    .findOne({ _id: user._id });
+    .findOne({ spotifyId: user.spotifyId });
   if (isUser === null) {
     const savedUser = await user.save();
     return { saved: true, user: savedUser };
@@ -20,11 +20,13 @@ const saveUser = async (user) => {
   const userData = {
     username: user.username,
     spotifyName: user.username,
+    spotifyId: user.spotifyId,
     email: user.email,
     playlists: user.playlists,
   };
   const updatedUser = await User
-    .findOneAndUpdate({ _id: user._id }, userData, { new: true });
+    .findOneAndUpdate({ spotifyId: user.spotifyId },
+      userData, { new: true });
   return { saved: false, user: updatedUser };
 };
 
