@@ -1,5 +1,5 @@
+// Routers
 const usersRouter = require('express').Router();
-const User = require('../models/user');
 // Services
 const userService = require('../services/userService');
 
@@ -14,38 +14,21 @@ usersRouter.get('/:id', async (req, res) => {
 });
 
 usersRouter.post('', async (req, res) => {
-  const { body } = req;
-
-  const user = new User({
-    username: body.username,
-    spotifyName: body.username,
-    email: body.email,
-    spotifyId: body.spotifyId,
-    playlists: body.playlists,
-  });
-
   try {
-    const result = await userService.saveUser(user);
-    if (result.saved === true) {
-      res.status(201).json(result.user);
-    } else {
-      res.status(204).json(result.user);
-    }
+    const result = await userService.saveUser(req.body);
+    res.status(201).json(result);
   } catch (err) {
-    if (err.name === 'MongoError') {
-      console.log('Mongoerror');
-      res.status(400).json({ error: 'MongoError' });
-    } else {
-      console.log('Error', err);
-      res.status(400).json({ error: 'Error' });
-    }
+    res.status(400).json({ error: err.name });
   }
 });
 
 usersRouter.put('/:id', async (req, res) => {
-  const newUser = req.body;
-  const updatedUser = await User.findByIdAndUpdate(req.params.id, newUser);
-  res.json(updatedUser);
+  try {
+    const updatedUser = await userService.updateUser(req.body);
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(400).json({ error: err.name });
+  }
 });
 
 module.exports = usersRouter;

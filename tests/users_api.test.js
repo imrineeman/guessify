@@ -6,7 +6,7 @@ const { dbConnect, dbDisconnect } = require('../utils/test-utils/dbHandler.utils
 const userService = require('../services/userService');
 
 const api = supertest(app);
-const { fakeUser, fakePlaylist } = require('../utils/test-utils/userFixtures');
+const { fakeUser } = require('../utils/test-utils/userFixtures');
 
 beforeAll(async () => {
   await mongoose.connection.close();
@@ -20,7 +20,7 @@ describe('User API tests', () => {
   });
 
   test('get users', async () => {
-    await new User(fakeUser).save();
+    await userService.saveUser(fakeUser);
     const res = await api.get('/api/users');
     expect(res.status).toBe(200);
     expect(res.body).toHaveLength(1);

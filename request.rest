@@ -2,8 +2,29 @@ POST http://localhost:3005/api/users
 content-type: application/json
 
 {
-  "spotifyId": "12322",
-  "username": "lolo",
+  "spotifyId": "1222d2ddasd322",
+  "username": "gg",
   "spotifyName": "asdfasd",
   "email": "ddd@gmail.com"
 }
+####
+PUT http://localhost:3005/api/users/12322
+content-type: application/json
+
+{
+  "spotifyId": "12322",
+  "username": "ss",
+  "spotifyName": "xx",
+  "email": "ddd@gmail.com"
+}
+####
+POST http://localhost:3005/api/playlists
+content-type: application/json
+
+{
+  "spotifyId": "1222d2ddasd322",
+  "username": "gg",
+  "spotifyName": "asdfasd",
+  "email": "ddd@gmail.com"
+}
+
