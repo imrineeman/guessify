@@ -14,7 +14,8 @@ const savePlaylist = async (data) => {
   const playlistData = { ...data };
   const playlist = new Playlist(playlistData);
   const isNull = await Playlist.find({ playlistId: playlistData.playlistId });
-  if (isNull === null || undefined) {
+  console.log(isNull);
+  if (!isNull.length) {
     await playlist.save();
   } else {
     console.log('duplcate playlist'); // Add user id \ ignore?
