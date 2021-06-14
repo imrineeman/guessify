@@ -20,12 +20,12 @@ Will be added once authentication is added.
 ### User related
 API endpoints for all users and specific user
 
-* [Show All Users](users/get.md) : `GET /api/users`
-* [Show Specific User By ID](users/get.md) : `GET /api/users/:id`
+* [Show All Users](users.md) : `GET /api/users`
+* [Show Specific User By ID](users.md) : `GET /api/users/:id`
 
 ### Playlist related
 
 Endpoint for all fetched playlist and get a specific playlist by id
-* [Show All Playlists](playlists/get.md) : `GET /api/playlists/`
-* [Show Playlist By ID](playlists/post.md) : `POST /api/playlists/:id`
+* [Show All Playlists](playlists.md) : `GET /api/playlists/`
+* [Show Playlist By ID](playlists.md) : `POST /api/playlists/:id`
 
