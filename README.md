@@ -4,18 +4,20 @@
 Guessify is a Spotify based web game that tests how well you know your own songs and playlists!
 The project is in progress.
 
-## API Documentaion
-### Open Endpoints
+## Open Endpoints
 
 Login endpoint - redirects to Spotify's authentication API.
 
-* [Login](login.md) : `POST /api/login/`
+* Login : `POST /api/login/`
 
-### Endpoints that require Authentication
+## Endpoints that require Authentication
 
 Closed endpoints require a valid Token to be included in the header of the
-request. A Token is acquired from the Login view above.
-Will be added once authentication is added.
+request. 
+A Token is acquired from the Login view above.
+
+*Authentication will be implemented in the future - currently all endpoints below are open*
+
 
 ### User related
 API endpoints for all users and specific user
@@ -27,5 +29,5 @@ API endpoints for all users and specific user
 
 Endpoint for all fetched playlist and get a specific playlist by id
 * [Show All Playlists](playlists.md) : `GET /api/playlists/`
-* [Show Playlist By ID](playlists.md) : `POST /api/playlists/:id`
+* [Show Playlist By ID](playlists.md) : `GET /api/playlists/:id`
 
