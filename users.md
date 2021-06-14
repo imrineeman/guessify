@@ -56,7 +56,7 @@
 
 * **URL**
 
-  /api/users/:d
+  /api/users/:id
 
 * **Method:**
 
