@@ -22,12 +22,12 @@ A Token is acquired from the Login view above.
 ### User related
 API endpoints for all users and specific user
 
-* [Show All Users](users.md) : `GET /api/users`
-* [Show Specific User By ID](users.md) : `GET /api/users/:id`
+* [Show All Users](./documentation/users.md) : `GET /api/users`
+* [Show Specific User By ID](./documentation/users.md) : `GET /api/users/:id`
 
 ### Playlist related
 
 Endpoint for all fetched playlist and get a specific playlist by id
-* [Show All Playlists](playlists.md) : `GET /api/playlists/`
-* [Show Playlist By ID](playlists.md) : `GET /api/playlists/:id`
+* [Show All Playlists](./documentation/playlists.md) : `GET /api/playlists/`
+* [Show Playlist By ID](./documentation/playlists.md) : `GET /api/playlists/:id`
 
