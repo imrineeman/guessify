@@ -1,8 +1,13 @@
 # Guessify
 
 ### This is the backend repository for the "Guessify" web project.
-Guessify is a Spotify based web game that tests how well you know your own songs and playlists!
-The project is in progress.
+Guessify is a Spotify based web game that tests how well you know your own songs and playlists!</br>
+Below you'll find a brief API documentation, and a diagram of the project's architecture.</br>
+
+*The project is in progress*
+
+## Architecture - State Diagram
+<img src="./documentation/guessify_diagram.svg">
 
 ## Open Endpoints
 
